@@ -93,7 +93,7 @@ KCFTracker::KCFTracker(bool hog, bool fixed_window, bool multiscale, bool lab)
 {
 
     // Parameters equal in all cases
-    lambda = 0.0001;
+    lambda = 0.0001; //linear interpolation factor for adaptation
     padding = 2.5; 
     //output_sigma_factor = 0.1;
     output_sigma_factor = 0.125;
