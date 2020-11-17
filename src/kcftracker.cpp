@@ -94,9 +94,9 @@ KCFTracker::KCFTracker(bool hog, bool fixed_window, bool multiscale, bool lab)
 
     // Parameters equal in all cases
     lambda = 0.0001; //linear interpolation factor for adaptation
-    padding = 2.5; 
+    padding = 2.5; //area surrounding the target, relative to its size
     //output_sigma_factor = 0.1;
-    output_sigma_factor = 0.125;
+    output_sigma_factor = 0.125; //bandwidth of gaussian target
 
 
     if (hog) {    // HOG
@@ -237,6 +237,8 @@ cv::Point2f KCFTracker::detect(cv::Mat z, cv::Mat x, float &peak_value)
     //minMaxLoc only accepts doubles for the peak, and integer points for the coordinates
     cv::Point2i pi;
     double pv;
+    // cv::minMaxLoc函数原型
+    // void minMaxLoc(const SparseMat& src, double* minVal, double* maxVal, int* minIdx=0, int* maxIdx=0);
     cv::minMaxLoc(res, NULL, &pv, NULL, &pi);
     peak_value = (float) pv;
 
@@ -310,6 +312,7 @@ cv::Mat KCFTracker::gaussianCorrelation(cv::Mat x1, cv::Mat x2)
         c = real(c);
     }
     cv::Mat d; 
+    // 求最大响应
     cv::max(( (cv::sum(x1.mul(x1))[0] + cv::sum(x2.mul(x2))[0])- 2. * c) / (size_patch[0]*size_patch[1]*size_patch[2]) , 0, d);
 
     cv::Mat k;
