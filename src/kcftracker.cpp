@@ -101,12 +101,12 @@ KCFTracker::KCFTracker(bool hog, bool fixed_window, bool multiscale, bool lab)
 
     if (hog) {    // HOG
         // VOT
-        interp_factor = 0.012;
-        sigma = 0.6; 
+        interp_factor = 0.012; //linear interpolation factor for adaptation
+        sigma = 0.6; // gaussian kernel bandwidth
         // TPAMI
         //interp_factor = 0.02;
         //sigma = 0.5; 
-        cell_size = 4;
+        cell_size = 4; //HOG cell size
         _hogfeatures = true;
 
         if (lab) {
@@ -137,10 +137,10 @@ KCFTracker::KCFTracker(bool hog, bool fixed_window, bool multiscale, bool lab)
 
 
     if (multiscale) { // multiscale
-        template_size = 96;
+        template_size = 96; //template size in pixels, 0 to use ROI size
         //template_size = 100;
-        scale_step = 1.05;
-        scale_weight = 0.95;
+        scale_step = 1.05; //scale step for multi-scale estimation, 1 to disable it
+        scale_weight = 0.95;//to downweight detection scores of other scales for added stability
         if (!fixed_window) {
             //printf("Multiscale does not support non-fixed window.\n");
             fixed_window = true;
@@ -312,7 +312,6 @@ cv::Mat KCFTracker::gaussianCorrelation(cv::Mat x1, cv::Mat x2)
         c = real(c);
     }
     cv::Mat d; 
-    // 求最大响应
     cv::max(( (cv::sum(x1.mul(x1))[0] + cv::sum(x2.mul(x2))[0])- 2. * c) / (size_patch[0]*size_patch[1]*size_patch[2]) , 0, d);
 
     cv::Mat k;
