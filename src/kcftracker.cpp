@@ -432,6 +432,7 @@ cv::Mat KCFTracker::getFeatures(const cv::Mat & image, bool inithann, float scal
             for (int cY = cell_size; cY < z.rows-cell_size; cY+=cell_size){
                 for (int cX = cell_size; cX < z.cols-cell_size; cX+=cell_size){
                     // Iterate through each pixel of cell (cX,cY)
+                    //对每个cell的每个像素的lab值进行根据_labCentroids进行分类，分类标准：欧氏距离的平方
                     for(int y = cY; y < cY+cell_size; ++y){
                         for(int x = cX; x < cX+cell_size; ++x){
                             // Lab components for each pixel
